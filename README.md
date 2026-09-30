@@ -18,6 +18,12 @@ Changing servers, switching realms or rolling an alt of the same class is exciti
 
 Like a warlock's soulstone, **Soulstone** lets your setup come back to life somewhere else, exactly as you left it.
 
+<p align="center">
+  <img src="docs/screenshots/setup.png" width="49%" alt="Setup tab: snapshots with a preview of all 120 action slots per spec">
+  <img src="docs/screenshots/talents.png" width="49%" alt="Talents tab: talent templates with the three trees, ranks and glyphs">
+</p>
+<p align="center"><sub><b>Setup</b> — every snapshot with a preview of its bars, per spec &nbsp;·&nbsp; <b>Talents</b> — templates with their trees and glyphs</sub></p>
+
 ## ✨ What it moves
 
 | | What | How |
