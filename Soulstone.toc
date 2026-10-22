@@ -7,6 +7,7 @@
 ## Version: 1.1.0
 ## X-License: GPL-3.0-or-later
 ## X-Website: https://github.com/pabhoz/Soulstone-WoW-Addon
+## OptionalDeps: Stormrage
 ## SavedVariables: SoulstoneDB
 Locales.lua
 Core.lua

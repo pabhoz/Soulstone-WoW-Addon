@@ -555,3 +555,24 @@ function Soulstone.CreateMinimapButton()
 	PositionMinimapButton()
 	Soulstone.UpdateMinimapButton()
 end
+
+-- In the Stormrage menu when that addon is installed, else a button of its own.
+function Soulstone.CreateLauncher()
+	local hub = type(Stormrage) == "table" and Stormrage.Register and Stormrage.Register({
+		name = "Soulstone",
+		icon = "Interface\\Icons\\Spell_Shadow_SoulGem",
+		description = L["Your setup, reborn anywhere"],
+		onClick = function() Soulstone.ToggleUI() end,
+		tooltip = function(tt)
+			tt:AddLine(L["Action bars, macros, keybindings and talents between characters and servers."], 0.8, 0.8, 0.8, true)
+		end,
+		actions = {
+			{ text = L["Save current character"], func = function() StaticPopup_Show("SOULSTONE_SAVE") end },
+			{ text = L["Copy bars from the other spec"], func = function()
+				if (GetNumTalentGroups() or 1) < 2 then Soulstone.Print(L["This character has only one spec."]) return end
+				Soulstone.ConfirmCopySpec(SoulstoneDB.options.copyFillOnly)
+			end },
+		},
+	})
+	if not hub then Soulstone.CreateMinimapButton() end
+end

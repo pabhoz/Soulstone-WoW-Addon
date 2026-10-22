@@ -113,4 +113,6 @@ if locale == "esES" or locale == "esMX" then
 	L["Copy bars from spec %d"] = "Copiar barras del spec %d"
 	L["Copy spec: only empty slots"] = "Copiar spec: solo vacios"
 	L["Uses the other spec's bars as a base so you only change what is different. Soulstone remembers each spec's bars by itself while you play."] = "Usa las barras del otro spec como base, asi solo cambias lo que es distinto. Soulstone recuerda solo las barras de cada spec mientras juegas."
+	L["Your setup, reborn anywhere"] = "Tu configuracion, renacida en cualquier lugar"
+	L["Action bars, macros, keybindings and talents between characters and servers."] = "Barras de accion, macros, keybinds y talentos entre personajes y servidores."
 end

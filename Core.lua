@@ -610,7 +610,7 @@ f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", function(self, _, addon)
 	if addon == "Soulstone" then
 		InitDB()
-		Soulstone.CreateMinimapButton()
+		Soulstone.CreateLauncher()
 		Soulstone.StartBarTracker()
 		self:UnregisterEvent("ADDON_LOADED")
 	end
