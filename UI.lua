@@ -4,7 +4,7 @@
 
 local L = Soulstone.L
 
-local ROWS = 19
+local ROWS = 18
 local ROW_HEIGHT = 20
 local GRID_COLS, GRID_ROWS, CELL = 12, 10, 22
 local QUESTION_MARK = "Interface\\Icons\\INV_Misc_QuestionMark"
@@ -200,8 +200,21 @@ local function UpdateDetails()
 	frame.delete:Enable()
 end
 
+local function UpdateCopySpec()
+	local b = frame.copySpec
+	if (GetNumTalentGroups() or 1) < 2 then
+		b:SetText(L["Copy bars from the other spec"])
+		b:Disable()
+		return
+	end
+	local from = 3 - (GetActiveTalentGroup() or 1)
+	b:SetText(L["Copy bars from spec %d"]:format(from))
+	if Soulstone.RememberedBars(from) then b:Enable() else b:Disable() end
+end
+
 function Soulstone.RefreshUI()
 	if not frame or not frame:IsShown() then return end
+	UpdateCopySpec()
 	if frame.panels[1]:IsShown() then
 		UpdateList()
 		UpdateDetails()
@@ -337,6 +350,19 @@ local function CreateUI()
 	save:SetPoint("BOTTOMLEFT", 20, 18)
 	save:SetScript("OnClick", function() StaticPopup_Show("SOULSTONE_SAVE") end)
 
+	-- dual spec: the other spec's bars onto this one (SpecCopy.lua)
+	frame.copySpec = MakeButton(p, "", 220)
+	frame.copySpec:SetPoint("BOTTOM", save, "TOP", 0, 4)
+	frame.copySpec:SetScript("OnClick", function() Soulstone.ConfirmCopySpec(SoulstoneDB.options.copyFillOnly) end)
+	if frame.copySpec.SetMotionScriptsWhileDisabled then frame.copySpec:SetMotionScriptsWhileDisabled(true) end
+	frame.copySpec:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_TOP")
+		GameTooltip:AddLine(self:GetText(), 1, 1, 1)
+		GameTooltip:AddLine(L["Uses the other spec's bars as a base so you only change what is different. Soulstone remembers each spec's bars by itself while you play."], nil, nil, nil, true)
+		GameTooltip:Show()
+	end)
+	frame.copySpec:SetScript("OnLeave", GameTooltip_Hide)
+
 	-- right: details
 	local x = 260
 	frame.title2 = p:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
@@ -405,12 +431,14 @@ local function CreateUI()
 		MakeCheck(p, "Bindings", L["Keybindings"], "bindings"),
 		MakeCheck(p, "ClearEmpty", L["Clear empty slots"], "clearEmpty"),
 		MakeCheck(p, "Talents", L["Talents (needs unspent points)"], "talents"),
+		MakeCheck(p, "CopyFillOnly", L["Copy spec: only empty slots"], "copyFillOnly"),
 	}
 	checks[1]:SetPoint("TOPLEFT", x - 4, -350)
 	checks[2]:SetPoint("TOPLEFT", x + 150, -350)
 	checks[3]:SetPoint("TOPLEFT", x - 4, -374)
 	checks[4]:SetPoint("TOPLEFT", x + 150, -374)
 	checks[5]:SetPoint("TOPLEFT", x - 4, -398)
+	checks[6]:SetPoint("TOPLEFT", x + 150, -398)
 
 	frame.status = p:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
 	frame.status:SetPoint("TOPLEFT", x, -428)

@@ -65,6 +65,8 @@ local function InitDB()
 	SoulstoneDB.minimap = SoulstoneDB.minimap or { angle = 200, hide = false }
 	SoulstoneDB.options = SoulstoneDB.options or { actions = true, macros = true, bindings = true, clearEmpty = true }
 	if SoulstoneDB.options.talents == nil then SoulstoneDB.options.talents = true end
+	if SoulstoneDB.options.copyFillOnly == nil then SoulstoneDB.options.copyFillOnly = true end
+	SoulstoneDB.bars = SoulstoneDB.bars or {}
 	SoulstoneDB.templates = SoulstoneDB.templates or {}
 	-- snapshots saved before templates existed also show up in the Talents tab
 	for name, snap in pairs(SoulstoneDB.snapshots) do
@@ -167,6 +169,7 @@ local function CaptureActions()
 	end
 	return actions
 end
+Soulstone.CaptureActions = CaptureActions
 
 local function CaptureMacros()
 	local macros = {}
@@ -258,6 +261,13 @@ local function Store(name)
 	end
 	SoulstoneDB.snapshots[name] = snap
 	return snap, active
+end
+
+-- Saves the current setup as this character's backup snapshot (before changing the bars).
+function Soulstone.Backup()
+	local backup = BACKUP_PREFIX .. Soulstone.CharKey()
+	Store(backup)
+	return backup
 end
 
 function Soulstone.Save(name)
@@ -442,6 +452,7 @@ local function PickupSaved(a)
 	end
 	return GetCursorInfo() ~= nil
 end
+Soulstone.PickupSaved = PickupSaved
 
 local function RestoreActions(actions, opts, report)
 	for slot = 1, NUM_SLOTS do
@@ -538,6 +549,12 @@ SlashCmdList.SOULSTONE = function(msg)
 
 	if cmd == "" then
 		Soulstone.ToggleUI()
+	elseif cmd == "copy" then
+		-- /soulstone copy [fill|all]: the other spec's bars onto the active spec
+		local fillOnly = SoulstoneDB.options.copyFillOnly
+		if arg == "fill" then fillOnly = true elseif arg == "all" then fillOnly = false end
+		Soulstone.CopySpec(3 - (GetActiveTalentGroup() or 1), fillOnly)
+		Soulstone.RefreshUI()
 	elseif cmd == "save" then
 		Soulstone.Save(arg)
 		Soulstone.RefreshUI()
@@ -582,6 +599,7 @@ SlashCmdList.SOULSTONE = function(msg)
 		Print("  /soulstone saveboth [name] - " .. L["save, switch spec, save the other spec's bars"])
 		Print("  /soulstone load <name> [1|2] - " .. L["restore a snapshot onto this character"])
 		Print("  /soulstone loadboth <name> - " .. L["restore both specs (switches spec)"])
+		Print("  /soulstone copy [fill|all] - " .. L["copy the other spec's bars onto this spec"])
 		Print("  /soulstone list | delete <name> - " .. L["list / delete snapshots"])
 		Print("  /soulstone minimap - " .. L["show / hide the minimap button"])
 	end
@@ -593,6 +611,7 @@ f:SetScript("OnEvent", function(self, _, addon)
 	if addon == "Soulstone" then
 		InitDB()
 		Soulstone.CreateMinimapButton()
+		Soulstone.StartBarTracker()
 		self:UnregisterEvent("ADDON_LOADED")
 	end
 end)

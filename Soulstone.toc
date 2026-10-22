@@ -4,12 +4,13 @@
 ## Notes-esES: Migra tu configuracion de juego - barras de accion (ambos specs), macros de personaje y keybinds - entre personajes, reinos y servidores.
 ## Notes-esMX: Migra tu configuracion de juego - barras de accion (ambos specs), macros de personaje y keybinds - entre personajes, reinos y servidores.
 ## Author: pabhoz
-## Version: 1.0.0
+## Version: 1.1.0
 ## X-License: GPL-3.0-or-later
 ## X-Website: https://github.com/pabhoz/Soulstone-WoW-Addon
 ## SavedVariables: SoulstoneDB
 Locales.lua
 Core.lua
+SpecCopy.lua
 Talents.lua
 UI.lua
 TalentsUI.lua

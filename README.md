@@ -39,7 +39,7 @@ Plus:
 - 🗂️ **Talent templates** — save builds, design them with Blizzard's talent preview, or import them from **Wowhead**. Apply them in one click, even partially while leveling.
 - 👀 **Visual preview** of every snapshot: all 120 slots with tooltips, and the talent trees of every template.
 - 🛟 **Automatic backup** before every restore — undo with one click.
-- 🔁 **Dual spec aware** — Soulstone switches spec for you to save or restore the other spec's bars.
+- 🔁 **Dual spec aware** — Soulstone switches spec for you to save or restore the other spec's bars, and copies one spec's bars onto the other so a new spec doesn't start from zero.
 - 🌍 English and Spanish (`esES` / `esMX`) localization.
 
 ## 🚀 Quick start: moving to a new server
@@ -69,6 +69,17 @@ So Soulstone does the boring part for you:
 4. asks whether you want to switch back.
 
 When restoring, bars from any saved spec can go to any spec: pick **1** or **2** in the snapshot view and they are applied to your **active** spec.
+
+### Copy one spec's bars onto the other
+
+Just bought dual spec and your second spec is a blank set of bars? Soulstone notices and offers to **copy the bars of your other spec as a starting point** — then you only change what is different.
+
+- Soulstone **remembers each spec's bars by itself** while you play, so nothing has to be saved first.
+- **Only empty slots** (default): what you already placed in this spec stays where it is. Untick *Copy spec: only empty slots* to make both specs identical.
+- Spells this spec doesn't know (usually talent spells) are skipped and listed in the chat.
+- A backup is saved before copying, as with every restore.
+
+Use the **Copy bars from spec N** button in the Setup tab or `/soulstone copy`.
 
 ## 🌳 Talent templates
 
@@ -127,6 +138,7 @@ Then make sure **Soulstone** is enabled in the **AddOns** list on the character 
 | `/soulstone saveboth [name]` | Save, switch spec, save the other spec's bars too |
 | `/soulstone load <name> [1\|2]` | Restore a snapshot on this character (optionally from saved spec 1 or 2) |
 | `/soulstone loadboth <name>` | Restore both specs (switches spec) |
+| `/soulstone copy [fill\|all]` | Copy the other spec's bars onto your active spec (only empty slots, or everything) |
 | `/soulstone list` | List snapshots |
 | `/soulstone delete <name>` | Delete a snapshot |
 | `/soulstone minimap` | Show / hide the minimap button |
