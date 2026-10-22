@@ -203,13 +203,12 @@ end
 local function UpdateCopySpec()
 	local b = frame.copySpec
 	if (GetNumTalentGroups() or 1) < 2 then
-		b:SetText(L["Copy bars from the other spec"])
+		b:SetText(L["Copy this spec to the other one"])
 		b:Disable()
 		return
 	end
-	local from = 3 - (GetActiveTalentGroup() or 1)
-	b:SetText(L["Copy bars from spec %d"]:format(from))
-	if Soulstone.RememberedBars(from) then b:Enable() else b:Disable() end
+	b:SetText(L["Copy spec %d to spec %d"]:format(GetActiveTalentGroup() or 1, 3 - (GetActiveTalentGroup() or 1)))
+	b:Enable()
 end
 
 function Soulstone.RefreshUI()
@@ -353,12 +352,12 @@ local function CreateUI()
 	-- dual spec: the other spec's bars onto this one (SpecCopy.lua)
 	frame.copySpec = MakeButton(p, "", 220)
 	frame.copySpec:SetPoint("BOTTOM", save, "TOP", 0, 4)
-	frame.copySpec:SetScript("OnClick", function() Soulstone.ConfirmCopySpec(SoulstoneDB.options.copyFillOnly) end)
+	frame.copySpec:SetScript("OnClick", function() Soulstone.ConfirmCopyToOtherSpec(SoulstoneDB.options.copyFillOnly) end)
 	if frame.copySpec.SetMotionScriptsWhileDisabled then frame.copySpec:SetMotionScriptsWhileDisabled(true) end
 	frame.copySpec:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_TOP")
 		GameTooltip:AddLine(self:GetText(), 1, 1, 1)
-		GameTooltip:AddLine(L["Uses the other spec's bars as a base so you only change what is different. Soulstone remembers each spec's bars by itself while you play."], nil, nil, nil, true)
+		GameTooltip:AddLine(L["Pastes this spec's bars on your other spec as a base, so there you only change what is different. Soulstone switches spec for it (5 sec cast) and offers to switch back."], nil, nil, nil, true)
 		GameTooltip:Show()
 	end)
 	frame.copySpec:SetScript("OnLeave", GameTooltip_Hide)
@@ -568,9 +567,9 @@ function Soulstone.CreateLauncher()
 		end,
 		actions = {
 			{ text = L["Save current character"], func = function() StaticPopup_Show("SOULSTONE_SAVE") end },
-			{ text = L["Copy bars from the other spec"], func = function()
+			{ text = L["Copy this spec to the other one"], func = function()
 				if (GetNumTalentGroups() or 1) < 2 then Soulstone.Print(L["This character has only one spec."]) return end
-				Soulstone.ConfirmCopySpec(SoulstoneDB.options.copyFillOnly)
+				Soulstone.ConfirmCopyToOtherSpec(SoulstoneDB.options.copyFillOnly)
 			end },
 		},
 	})

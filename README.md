@@ -79,7 +79,7 @@ Just bought dual spec and your second spec is a blank set of bars? Soulstone not
 - Spells this spec doesn't know (usually talent spells) are skipped and listed in the chat.
 - A backup is saved before copying, as with every restore.
 
-Use the **Copy bars from spec N** button in the Setup tab or `/soulstone copy`.
+To paste the bars of the spec you are in onto the other one, use **Copy spec N to spec M** in the Setup tab (or `/soulstone copyto`): Soulstone switches spec (the normal 5-second cast), pastes them there and offers to switch back. `/soulstone copy` does the opposite, from the other spec onto this one, without switching.
 
 ## 🌳 Talent templates
 
@@ -138,6 +138,7 @@ Then make sure **Soulstone** is enabled in the **AddOns** list on the character 
 | `/soulstone saveboth [name]` | Save, switch spec, save the other spec's bars too |
 | `/soulstone load <name> [1\|2]` | Restore a snapshot on this character (optionally from saved spec 1 or 2) |
 | `/soulstone loadboth <name>` | Restore both specs (switches spec) |
+| `/soulstone copyto [fill\|all]` | Copy your active spec's bars onto the other spec (switches spec) |
 | `/soulstone copy [fill\|all]` | Copy the other spec's bars onto your active spec (only empty slots, or everything) |
 | `/soulstone list` | List snapshots |
 | `/soulstone delete <name>` | Delete a snapshot |

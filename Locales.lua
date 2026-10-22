@@ -115,4 +115,12 @@ if locale == "esES" or locale == "esMX" then
 	L["Uses the other spec's bars as a base so you only change what is different. Soulstone remembers each spec's bars by itself while you play."] = "Usa las barras del otro spec como base, asi solo cambias lo que es distinto. Soulstone recuerda solo las barras de cada spec mientras juegas."
 	L["Your setup, reborn anywhere"] = "Tu configuracion, renacida en cualquier lugar"
 	L["Action bars, macros, keybindings and talents between characters and servers."] = "Barras de accion, macros, keybinds y talentos entre personajes y servidores."
+	L["copy this spec's bars onto the other spec (switches spec)"] = "copia las barras de este spec en el otro (cambia de spec)"
+	L["Spec switch was interrupted - nothing was copied."] = "Se interrumpio el cambio de spec - no se copio nada."
+	L["Bars of spec %d copied onto spec %d."] = "Barras del spec %d copiadas en el spec %d."
+	L["Copy the bars of spec %d onto spec %d?\n\nSoulstone switches to spec %d (5 sec cast, don't move), fills its empty slots and offers to switch back. A backup is saved first."] = "Copiar las barras del spec %d en el spec %d?\n\nSoulstone cambia al spec %d (5 seg de casteo, no te muevas), llena sus slots vacios y te ofrece volver. Antes se guarda un backup."
+	L["Copy the bars of spec %d onto spec %d?\n\nSoulstone switches to spec %d (5 sec cast, don't move), makes it identical to spec %d and offers to switch back. A backup is saved first."] = "Copiar las barras del spec %d en el spec %d?\n\nSoulstone cambia al spec %d (5 seg de casteo, no te muevas), lo deja igual al spec %d y te ofrece volver. Antes se guarda un backup."
+	L["Copy this spec to the other one"] = "Copiar este spec al otro"
+	L["Copy spec %d to spec %d"] = "Copiar spec %d al spec %d"
+	L["Pastes this spec's bars on your other spec as a base, so there you only change what is different. Soulstone switches spec for it (5 sec cast) and offers to switch back."] = "Pega las barras de este spec en tu otro spec como base, asi alli solo cambias lo que es distinto. Soulstone cambia de spec para hacerlo (5 seg de casteo) y te ofrece volver."
 end

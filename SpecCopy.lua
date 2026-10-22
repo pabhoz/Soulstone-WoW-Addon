@@ -130,6 +130,48 @@ function Soulstone.ConfirmCopySpec(fillOnly)
 	if dialog then dialog.data = { from = from, fillOnly = fillOnly } end
 end
 
+-- The other way round: this spec's bars onto the other spec. The client can
+-- only change the active spec's bars, so Soulstone remembers these bars now,
+-- switches spec (5 sec cast), pastes them and offers to switch back.
+local pushing
+
+function Soulstone.CopyToOtherSpec(fillOnly)
+	if InCombatLockdown() then Print(L["Not possible in combat."]) return end
+	if (GetNumTalentGroups() or 1) < 2 then Print(L["This character has only one spec."]) return end
+	local from = GetActiveTalentGroup() or 1
+	local to = 3 - from
+	Memory()[from] = { actions = Soulstone.CaptureActions(), date = date("%Y-%m-%d %H:%M") }
+	pushing = to -- no "your spec is empty" offer on arrival: we are about to fill it
+	Soulstone.SwitchSpecThen(function()
+		pushing = nil
+		Soulstone.CopySpec(from, fillOnly)
+	end, L["Spec switch was interrupted - nothing was copied."], L["Bars of spec %d copied onto spec %d."]:format(from, to))
+end
+
+StaticPopupDialogs["SOULSTONE_COPY_TO"] = {
+	text = "%s",
+	button1 = L["Copy"],
+	button2 = CANCEL,
+	OnAccept = function(self, fillOnly) Soulstone.CopyToOtherSpec(fillOnly) end,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = 1,
+}
+
+-- Asks before copying the active spec onto the other one.
+function Soulstone.ConfirmCopyToOtherSpec(fillOnly)
+	local from = GetActiveTalentGroup() or 1
+	local to = 3 - from
+	local text
+	if fillOnly then
+		text = L["Copy the bars of spec %d onto spec %d?\n\nSoulstone switches to spec %d (5 sec cast, don't move), fills its empty slots and offers to switch back. A backup is saved first."]:format(from, to, to)
+	else
+		text = L["Copy the bars of spec %d onto spec %d?\n\nSoulstone switches to spec %d (5 sec cast, don't move), makes it identical to spec %d and offers to switch back. A backup is saved first."]:format(from, to, to, from)
+	end
+	local dialog = StaticPopup_Show("SOULSTONE_COPY_TO", text)
+	if dialog then dialog.data = fillOnly end
+end
+
 -- The freshly bought second spec starts with empty bars: offer the other one.
 StaticPopupDialogs["SOULSTONE_EMPTY_SPEC"] = {
 	text = L["Your spec %d has empty action bars.\n\nCopy the bars of spec %d as a starting point? Then you only change what is different."],
@@ -147,6 +189,7 @@ StaticPopupDialogs["SOULSTONE_EMPTY_SPEC"] = {
 local offered = {}
 
 local function OfferIfEmpty(active)
+	if pushing == active then pushing = nil return end
 	if offered[active] or (GetNumTalentGroups() or 1) < 2 or InCombatLockdown() then return end
 	local from = 3 - active
 	local source = Soulstone.RememberedBars(from)

@@ -126,4 +126,23 @@ fire("PLAYER_ENTERING_WORLD")
 tick(4)
 check(mem[2].actions[1] and mem[2].actions[1].name == "Fireball", "login with empty bars keeps the memory")
 specs[2] = saved
+-- 7. the other way round: from spec 1, paste its bars onto spec 2 (switches spec)
+function SetActiveTalentGroup(g)
+	fire("UNIT_SPELLCAST_START", "player", "Activate Primary Spec")
+	active = g
+	fire("ACTIONBAR_SLOT_CHANGED", 1)
+	fire("ACTIVE_TALENT_GROUP_CHANGED", g, 3 - g)
+end
+SetActiveTalentGroup(1)
+tick(4)
+specs[1][5] = "Frostbolt" -- something new in spec 1 that spec 2 doesn't have yet
+specs[2] = { [1] = "Arcane Missiles" }
+local shown = #popups
+Soulstone.CopyToOtherSpec(true)
+check(active == 2, "copy-to switches to the other spec")
+tick(3)
+check(specs[2][5] == "Frostbolt" and specs[2][1] == "Arcane Missiles", "this spec's bars pasted onto the other, keeping what it had")
+local last = popups[#popups]
+check(last.name == "SOULSTONE_SWITCH_BACK" and last.data == 1, "offers to switch back to spec 1")
+for i = shown + 1, #popups do check(popups[i].name ~= "SOULSTONE_EMPTY_SPEC", "no empty-spec offer while pasting") end
 print("all passed")

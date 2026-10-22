@@ -353,6 +353,8 @@ local function SwitchSpecThen(action, failMsg, doneText)
 	SetActiveTalentGroup(3 - active)
 end
 
+Soulstone.SwitchSpecThen = SwitchSpecThen
+
 -- True if this character has a second spec to switch to.
 function Soulstone.CanCaptureOtherSpec()
 	return (GetNumTalentGroups() or 1) > 1
@@ -555,6 +557,11 @@ SlashCmdList.SOULSTONE = function(msg)
 		if arg == "fill" then fillOnly = true elseif arg == "all" then fillOnly = false end
 		Soulstone.CopySpec(3 - (GetActiveTalentGroup() or 1), fillOnly)
 		Soulstone.RefreshUI()
+	elseif cmd == "copyto" then
+		-- /soulstone copyto [fill|all]: this spec's bars onto the other spec (switches spec)
+		local fillOnly = SoulstoneDB.options.copyFillOnly
+		if arg == "fill" then fillOnly = true elseif arg == "all" then fillOnly = false end
+		Soulstone.CopyToOtherSpec(fillOnly)
 	elseif cmd == "save" then
 		Soulstone.Save(arg)
 		Soulstone.RefreshUI()
@@ -599,6 +606,7 @@ SlashCmdList.SOULSTONE = function(msg)
 		Print("  /soulstone saveboth [name] - " .. L["save, switch spec, save the other spec's bars"])
 		Print("  /soulstone load <name> [1|2] - " .. L["restore a snapshot onto this character"])
 		Print("  /soulstone loadboth <name> - " .. L["restore both specs (switches spec)"])
+		Print("  /soulstone copyto [fill|all] - " .. L["copy this spec's bars onto the other spec (switches spec)"])
 		Print("  /soulstone copy [fill|all] - " .. L["copy the other spec's bars onto this spec"])
 		Print("  /soulstone list | delete <name> - " .. L["list / delete snapshots"])
 		Print("  /soulstone minimap - " .. L["show / hide the minimap button"])
